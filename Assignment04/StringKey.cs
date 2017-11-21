@@ -27,9 +27,17 @@ namespace Assignment04
         /// Returns the hash code for this string.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
-        public int HasCode()
+        public override int GetHashCode()
         {
-            return keyName.GetHashCode();
+            byte[] asciiBytes = Encoding.ASCII.GetBytes(keyName);
+            int hashCode = 0;
+
+            for (int i = 0; i < asciiBytes.Length; i++)
+            {
+                hashCode += (asciiBytes[i] * (int)Math.Pow(COEFFICIENT, i));
+            }
+
+            return hashCode;
         }
 
         /// <summary>
@@ -39,7 +47,16 @@ namespace Assignment04
         /// <param name="o">The string to compare to this instance.</param>
         /// <returns>true if obj is a String and its value is the same as this instance; otherwise, false. 
         /// If obj is null, the method returns false.</returns>
-        public override bool Equals(object o) => this.keyName == o.ToString();
+        public override bool Equals(object o)
+        {
+            if (this == o)
+                return true;
+            if (o == null || GetType() != o.GetType())
+                return false;
+
+            StringKey stringKey = (StringKey)o;
+            return keyName == stringKey.GetKeyName();
+        }
 
         /// <summary>
         /// Return the key name as string

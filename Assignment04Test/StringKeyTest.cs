@@ -9,6 +9,7 @@ namespace Assignment04Test
     {
         string keyName = "0";
         StringKey sk = new StringKey("0");
+        StringKey skzero = new StringKey("0");
 
         [TestMethod]
         public void Constructor()
@@ -19,13 +20,14 @@ namespace Assignment04Test
         [TestMethod]
         public void GetHashCodeSuccess()
         {
-            Assert.AreEqual(sk.HasCode(), keyName.GetHashCode());
+            Assert.AreEqual(sk.GetHashCode(), skzero.GetHashCode());
         }
 
         [TestMethod]
         public void EqualsSuccess()
         {
-            Assert.IsTrue(sk.Equals("0"));
+            Assert.IsTrue(sk.Equals(skzero));
+            Assert.IsFalse(sk.Equals("0"));
             Assert.IsFalse(sk.Equals(" "));
             Assert.IsFalse(sk.Equals("1"));
         }
@@ -51,7 +53,6 @@ namespace Assignment04Test
             StringKey secondSK = new StringKey("1");
 
             Assert.AreEqual(sk.CompareTo(newSK), 0);
-            Assert.AreEqual(sk.CompareTo(secondSK), -1);
             Assert.AreNotEqual(sk.CompareTo(secondSK), 0);
         }
     }
