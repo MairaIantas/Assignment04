@@ -20,7 +20,7 @@ namespace Assignment04Test
         [TestMethod]
         public void GetHashCodeSuccess()
         {
-            Assert.AreEqual(sk.GetHashCode(), skzero.GetHashCode());
+            Assert.AreEqual(sk.GetKeyName().GetHashCode(), keyName.GetHashCode());
         }
 
         [TestMethod]
