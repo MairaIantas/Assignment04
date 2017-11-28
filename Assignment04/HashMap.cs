@@ -12,7 +12,7 @@ namespace Assignment04
         /// <summary>
         /// 
         /// </summary>
-        public int size { get; set; }
+        private int size;
 
         /// <summary>
         /// Value greater 0 and less than 1 that indicate how full the HashMap can become before being extended
@@ -57,7 +57,7 @@ namespace Assignment04
         public HashMap()
         {
             this.LoadFactor = DEFAULT_LOADFACTOR;
-            this.Threshold = DEFAULT_CAPACITY * (Int32)DEFAULT_LOADFACTOR;
+            this.Threshold = Int32.Parse(Math.Round(DEFAULT_CAPACITY * DEFAULT_LOADFACTOR).ToString());
             table = new Entry<K, V>[DEFAULT_CAPACITY];
         }
 
@@ -67,7 +67,7 @@ namespace Assignment04
         public HashMap(int initialCapacity)
         {
             this.LoadFactor = DEFAULT_LOADFACTOR;
-            this.Threshold = initialCapacity * (Int32)DEFAULT_LOADFACTOR;
+            this.Threshold = Int32.Parse(Math.Round(initialCapacity * DEFAULT_LOADFACTOR).ToString());
             table = new Entry<K, V>[initialCapacity];
         }
 
@@ -82,7 +82,7 @@ namespace Assignment04
             }
 
             this.LoadFactor = loadFactor;
-            this.Threshold = initialCapacity * (Int32)loadFactor;
+            this.Threshold = Int32.Parse(Math.Round(initialCapacity * loadFactor).ToString());
             table = new Entry<K, V>[initialCapacity];
         }
 
@@ -148,13 +148,11 @@ namespace Assignment04
 
             V removed = Remove(key);
 
-            Entry<K, V> entry = new Entry<K, V>(key, value);
-
-            table[findBucket(key)] = entry;
+            table[findBucket(key)] = new Entry<K, V>(key, value);
 
             size++;
 
-            return entry.Value;
+            return removed;
         }
 
         /// <summary>
@@ -170,7 +168,7 @@ namespace Assignment04
 
             int index = findMatchingBucket(key);
 
-            if (index >= 0)
+            if (index != -1)
             {
                 value = table[index].Value;
                 table[index] = null;
@@ -184,7 +182,7 @@ namespace Assignment04
         /// Collections of Keys
         /// </summary>
         /// <returns></returns>
-        public ICollection<K> Keys()
+        public IEnumerator<K> Keys()
         {
             List<K> list = new List<K>();
 
@@ -193,14 +191,14 @@ namespace Assignment04
                 list.Add(entry.Key);
             }
 
-            return list;
+            return (IEnumerator<K>)list;
         }
 
         /// <summary>
         /// Collection of Values
         /// </summary>
         /// <returns></returns>
-        public ICollection<V> Values()
+        public IEnumerator<V> Values()
         {
             List<V> list = new List<V>();
 
@@ -209,7 +207,7 @@ namespace Assignment04
                 list.Add(entry.Value);
             }
 
-            return list;
+            return (IEnumerator<V>)list;
         }
 
         /// <summary>
@@ -248,7 +246,8 @@ namespace Assignment04
 
             int newCapacitySize = resize();
 
-            Entry<K, V>[] tableCopy = new Entry<K, V>[newCapacitySize];
+            Entry<K, V>[] tableCopy = table;
+            table = new Entry<K, V>[newCapacitySize];
 
             this.Threshold = (int)(LoadFactor * newCapacitySize);
 

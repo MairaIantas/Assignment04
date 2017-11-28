@@ -51,12 +51,12 @@ namespace Assignment04
         /// Returns an iterator of all keys
         /// </summary>
         /// <returns></returns>
-        ICollection<K> Keys();
+        IEnumerator<K> Keys();
 
         /// <summary>
         /// Returns an iterator of all values
         /// </summary>
         /// <returns></returns>
-        ICollection<V> Values();
+        IEnumerator<V> Values();
     }
 }
