@@ -29,12 +29,11 @@ namespace Assignment04
         /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
-            byte[] asciiBytes = Encoding.ASCII.GetBytes(keyName);
             int hashCode = 0;
 
-            for (int i = 0; i < asciiBytes.Length; i++)
+            for (int i = 0; i < keyName.Length; i++)
             {
-                hashCode += (asciiBytes[i] * (int)Math.Pow(COEFFICIENT, i));
+                hashCode += (int)(keyName[i] * Math.Pow(COEFFICIENT, i));
             }
 
             return Math.Abs(hashCode);
@@ -68,7 +67,7 @@ namespace Assignment04
         /// Returns this instance of String; no actual conversion is performed.
         /// </summary>
         /// <returns>The current string.</returns>
-        public override string ToString() { return this.keyName.ToString(); }
+        public override string ToString() { return String.Format("{0} : {1}", this.keyName.ToString(), this.GetHashCode()); }
 
         /// <summary>
         /// Compares this instance with a specified String object and indicates 

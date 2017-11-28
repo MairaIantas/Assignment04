@@ -41,7 +41,7 @@ namespace Assignment04
         /// Default factor specifying the percent of entries that 
         /// can be used before extending the array
         /// </summary>
-        const double DEFAULT_LOADFACTOR = 0.75;
+        const double DEFAULT_LOADFACTOR = .75;
 
         /// <summary>
         /// An array
@@ -57,7 +57,7 @@ namespace Assignment04
         public HashMap()
         {
             this.LoadFactor = DEFAULT_LOADFACTOR;
-            this.Threshold = Int32.Parse(Math.Round(DEFAULT_CAPACITY * DEFAULT_LOADFACTOR).ToString());
+            this.Threshold = (int)(DEFAULT_CAPACITY * DEFAULT_LOADFACTOR);
             table = new Entry<K, V>[DEFAULT_CAPACITY];
         }
 
@@ -67,7 +67,7 @@ namespace Assignment04
         public HashMap(int initialCapacity)
         {
             this.LoadFactor = DEFAULT_LOADFACTOR;
-            this.Threshold = Int32.Parse(Math.Round(initialCapacity * DEFAULT_LOADFACTOR).ToString());
+            this.Threshold = (int)(initialCapacity * DEFAULT_LOADFACTOR);
             table = new Entry<K, V>[initialCapacity];
         }
 
@@ -82,7 +82,7 @@ namespace Assignment04
             }
 
             this.LoadFactor = loadFactor;
-            this.Threshold = Int32.Parse(Math.Round(initialCapacity * loadFactor).ToString());
+            this.Threshold = (int)(initialCapacity * loadFactor);
             table = new Entry<K, V>[initialCapacity];
         }
 
@@ -138,10 +138,10 @@ namespace Assignment04
         {
             if (key == null || value == null)
             {
-                throw new ArgumentNullException("Key and Value cannot be null.");
+                throw new ArgumentNullException("Key or Value cannot be null.");
             }
 
-            if (size >= Threshold)
+            if (size + 1 >= Threshold)
             {
                 rehash();
             }
@@ -222,7 +222,7 @@ namespace Assignment04
                 throw new EntryPointNotFoundException();
             }
 
-            return new StringKey(key.ToString()).GetHashCode() % table.Length;
+            return key.GetHashCode() % table.Length;
         }
 
         /// <summary>
@@ -242,6 +242,7 @@ namespace Assignment04
         /// </summary>
         private void rehash()
         {
+            Console.WriteLine("Old:" + Threshold);
             size = 0;
 
             int newCapacitySize = resize();
@@ -263,7 +264,7 @@ namespace Assignment04
         }
 
         /// <summary>
-        /// 
+        /// Changes the size of my hashmap
         /// </summary>
         /// <returns></returns>
         private int resize()

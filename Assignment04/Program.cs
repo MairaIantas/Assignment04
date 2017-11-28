@@ -22,7 +22,9 @@ namespace Assignment04
                 double weight = Double.Parse(line.Split(',')[2]);
 
                 StringKey keyName = new StringKey(name);
+
                 Item item = new Item(name, gold, weight);
+
                 hashMap.Put(keyName, item);
             }
 
@@ -36,6 +38,8 @@ namespace Assignment04
                     }
                 }
             }
+
+            Console.ReadLine();
         }
     }
 }
