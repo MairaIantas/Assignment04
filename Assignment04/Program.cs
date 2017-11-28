@@ -17,18 +17,51 @@ namespace Assignment04
 
             foreach (var line in itemLines)
             {
-                StringKey keyName = new StringKey(line.Split(',')[0]);
-                Item item = new Item(line.Split(',')[0], int.Parse(line.Split(',')[1]), Double.Parse(line.Split(',')[2]));
+                string name = line.Split(',')[0];
+                int gold = Int32.Parse(line.Split(',')[1]);
+                double w = Double.Parse(line.Split(',')[2]);
+
+                //Console.WriteLine(String.Format("{0} {1} {2}", name, gold, w));
+
+                StringKey keyName = new StringKey(name);
+                Item item = new Item(name, gold, w);
                 hashMap.Put(keyName, item);
+
+                Console.WriteLine(hashMap.Get(keyName));
             }
 
-            foreach (var item in hashMap.Keys())
+            //foreach (var item in hashMap.Keys())
+            //{
+            //    if (hashMap.Get(item).GoldPieces == 0)
+            //    {
+            //        hashMap.Remove(item);
+            //    }
+            //}
+
+
+            //var iterator = hashMap.Keys();
+
+            //while (iterator.hasNext())
+            //{
+            //    System.out.println(iterator.next());
+            //}
+
+            while (hashMap.Keys().MoveNext())
             {
-                if (hashMap.Get(item).GoldPieces == 0)
+                if (hashMap.Keys().Current != null)
                 {
-                    hashMap.Remove(item);
+
                 }
             }
+
+            do
+            {
+                if (hashMap.Keys().Current != null)
+                {
+
+                }
+
+            } while (hashMap.Keys().MoveNext());
         }
     }
 }
