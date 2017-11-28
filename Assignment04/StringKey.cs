@@ -37,7 +37,7 @@ namespace Assignment04
                 hashCode += (asciiBytes[i] * (int)Math.Pow(COEFFICIENT, i));
             }
 
-            return hashCode;
+            return Math.Abs(hashCode);
         }
 
         /// <summary>

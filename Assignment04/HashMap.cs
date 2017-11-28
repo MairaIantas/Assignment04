@@ -220,7 +220,7 @@ namespace Assignment04
                 throw new EntryPointNotFoundException();
             }
 
-            return key.GetHashCode() % table.Length;
+            return new StringKey(key.ToString()).GetHashCode() % table.Length;
         }
 
         private int findMatchingBucket(K key)
@@ -242,11 +242,11 @@ namespace Assignment04
 
             for (int i = 0; i < tableCopy.Length; i++)
             {
-                Entry<K, V>[] entry = tableCopy;
+                Entry<K, V> entry = tableCopy[i];
 
                 if (entry != null)
                 {
-                    //Put(entry.Key, entry.GetValue);
+                    Put(entry.Key, entry.Value);
                 }
             }
         }
