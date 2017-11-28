@@ -24,7 +24,10 @@ namespace Assignment04
 
             foreach (var item in hashMap.Keys())
             {
-
+                if (hashMap.Get(item).GoldPieces == 0)
+                {
+                    hashMap.Remove(item);
+                }
             }
         }
     }

@@ -9,6 +9,9 @@ namespace Assignment04
 {
     public class HashMap<K, V> : IMap<K, V>
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public int size { get; set; }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace Assignment04
         /// Consists of Entry K V 
         /// Set to the DEFAULT_CAPACITY or specified capacity
         /// </summary>
-        public Entry<K, V>[] table = new Entry<K, V>[DEFAULT_CAPACITY];
+        public Entry<K, V>[] table;
 
         /// <summary>
         /// Constructor
@@ -54,7 +57,8 @@ namespace Assignment04
         public HashMap()
         {
             this.LoadFactor = DEFAULT_LOADFACTOR;
-            this.Threshold = Int32.Parse(Math.Round(DEFAULT_CAPACITY * DEFAULT_LOADFACTOR).ToString());
+            this.Threshold = DEFAULT_CAPACITY * (Int32)DEFAULT_LOADFACTOR;
+            table = new Entry<K, V>[DEFAULT_CAPACITY];
         }
 
         /// <summary>
@@ -63,7 +67,8 @@ namespace Assignment04
         public HashMap(int initialCapacity)
         {
             this.LoadFactor = DEFAULT_LOADFACTOR;
-            this.Threshold = Int32.Parse(Math.Round(initialCapacity * DEFAULT_LOADFACTOR).ToString());
+            this.Threshold = initialCapacity * (Int32)DEFAULT_LOADFACTOR;
+            table = new Entry<K, V>[initialCapacity];
         }
 
         /// <summary>
@@ -77,7 +82,8 @@ namespace Assignment04
             }
 
             this.LoadFactor = loadFactor;
-            this.Threshold = Int32.Parse(Math.Round(initialCapacity * this.LoadFactor).ToString());
+            this.Threshold = initialCapacity * (Int32)loadFactor;
+            table = new Entry<K, V>[initialCapacity];
         }
 
         /// <summary>
@@ -97,7 +103,7 @@ namespace Assignment04
         /// <returns></returns>
         public bool IsEmpty()
         {
-            return Size() == 0;
+            return Size() <= 0;
         }
 
         /// <summary>
@@ -105,7 +111,10 @@ namespace Assignment04
         /// </summary>
         public void Clear()
         {
-            this.table = null;
+            for (int i = 0; i < table.Length; i++)
+            {
+                table[i] = null;
+            }
             this.size = 0;
         }
 
@@ -116,7 +125,7 @@ namespace Assignment04
         /// <returns> Returns null if the passed key not in the HashMap</returns>
         public V Get(K key)
         {
-            return findMatchingBucket(key) == -1 ? default(V) : table[findMatchingBucket(key)].Value;
+            return findMatchingBucket(key) >= 0 ? table[findMatchingBucket(key)].Value : default(V);
         }
 
         /// <summary>
@@ -129,7 +138,7 @@ namespace Assignment04
         {
             if (key == null || value == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Key and Value cannot be null.");
             }
 
             if (size >= Threshold)
@@ -139,10 +148,13 @@ namespace Assignment04
 
             V removed = Remove(key);
 
-            table[findBucket(key)] = new Entry<K, V>(key, value);
+            Entry<K, V> entry = new Entry<K, V>(key, value);
+
+            table[findBucket(key)] = entry;
+
             size++;
 
-            return removed;
+            return entry.Value;
         }
 
         /// <summary>
@@ -154,18 +166,18 @@ namespace Assignment04
         /// <returns></returns>
         public V Remove(K key)
         {
-            V returnValue = default(V);
+            V value = default(V);
 
             int index = findMatchingBucket(key);
 
-            if (index != -1)
+            if (index >= 0)
             {
-                returnValue = table[index].Value;
+                value = table[index].Value;
                 table[index] = null;
 
                 size--;
             }
-            return returnValue;
+            return value;
         }
 
         /// <summary>
@@ -176,13 +188,9 @@ namespace Assignment04
         {
             List<K> list = new List<K>();
 
-            for (int i = 0; i < table.Length; i++)
+            foreach (Entry<K, V> entry in table)
             {
-                if (table[i] != null)
-                {
-                    K key = table[i].Key;
-                    list.Add(key);
-                }
+                list.Add(entry.Key);
             }
 
             return list;
@@ -196,13 +204,9 @@ namespace Assignment04
         {
             List<V> list = new List<V>();
 
-            for (int i = 0; i < table.Length; i++)
+            foreach (Entry<K, V> entry in table)
             {
-                if (table[i] != null)
-                {
-                    V values = table[i].Value;
-                    list.Add(values);
-                }
+                list.Add(entry.Value);
             }
 
             return list;
@@ -223,6 +227,11 @@ namespace Assignment04
             return new StringKey(key.ToString()).GetHashCode() % table.Length;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         private int findMatchingBucket(K key)
         {
             int currentIndex = findBucket(key);
@@ -230,6 +239,9 @@ namespace Assignment04
             return table[currentIndex] == null ? -1 : currentIndex;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void rehash()
         {
             size = 0;
@@ -250,6 +262,11 @@ namespace Assignment04
                 }
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private int resize()
         {
             Boolean isPrime = false;
