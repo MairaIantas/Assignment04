@@ -19,49 +19,23 @@ namespace Assignment04
             {
                 string name = line.Split(',')[0];
                 int gold = Int32.Parse(line.Split(',')[1]);
-                double w = Double.Parse(line.Split(',')[2]);
-
-                //Console.WriteLine(String.Format("{0} {1} {2}", name, gold, w));
+                double weight = Double.Parse(line.Split(',')[2]);
 
                 StringKey keyName = new StringKey(name);
-                Item item = new Item(name, gold, w);
+                Item item = new Item(name, gold, weight);
                 hashMap.Put(keyName, item);
-
-                Console.WriteLine(hashMap.Get(keyName));
             }
 
-            //foreach (var item in hashMap.Keys())
-            //{
-            //    if (hashMap.Get(item).GoldPieces == 0)
-            //    {
-            //        hashMap.Remove(item);
-            //    }
-            //}
-
-
-            //var iterator = hashMap.Keys();
-
-            //while (iterator.hasNext())
-            //{
-            //    System.out.println(iterator.next());
-            //}
-
-            while (hashMap.Keys().MoveNext())
+            foreach (var item in hashMap.table)
             {
-                if (hashMap.Keys().Current != null)
+                if (item != null)
                 {
-
+                    if (item.Value.GoldPieces == 0)
+                    {
+                        hashMap.Remove(item.Key);
+                    }
                 }
             }
-
-            do
-            {
-                if (hashMap.Keys().Current != null)
-                {
-
-                }
-
-            } while (hashMap.Keys().MoveNext());
         }
     }
 }
