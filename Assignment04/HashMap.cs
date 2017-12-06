@@ -143,7 +143,7 @@ namespace Assignment04
 
             if (size + 1 >= Threshold)
             {
-                rehash();
+                Rehash();
             }
 
             V removed = Remove(key);
@@ -222,7 +222,9 @@ namespace Assignment04
                 throw new EntryPointNotFoundException();
             }
 
-            return key.GetHashCode() % table.Length;
+            StringKey stringKey = new StringKey(key.ToString());
+
+            return stringKey.GetHashCode() % table.Length;
         }
 
         /// <summary>
@@ -240,12 +242,11 @@ namespace Assignment04
         /// <summary>
         /// 
         /// </summary>
-        private void rehash()
+        private void Rehash()
         {
-            Console.WriteLine("Old:" + Threshold);
             size = 0;
 
-            int newCapacitySize = resize();
+            int newCapacitySize = Resize();
 
             Entry<K, V>[] tableCopy = table;
             table = new Entry<K, V>[newCapacitySize];
@@ -267,7 +268,7 @@ namespace Assignment04
         /// Changes the size of my hashmap
         /// </summary>
         /// <returns></returns>
-        private int resize()
+        private int Resize()
         {
             Boolean isPrime = false;
 
@@ -317,12 +318,21 @@ public class Entry<K, V>
     /// </summary>
     public V Value { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
     public Entry(K key, V value)
     {
         this.Key = key;
         this.Value = value;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public override String ToString()
     {
         return string.Format("{0}:{1}", this.Key, this.Value);

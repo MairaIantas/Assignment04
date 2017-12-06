@@ -13,7 +13,7 @@ namespace Assignment04
     {
         public string Name { get; private set; }
         public int GoldPieces { get; private set; }
-        public Double Weight { get; private set; }
+        public double Weight { get; private set; }
 
         /// <summary>
         /// Constructor
