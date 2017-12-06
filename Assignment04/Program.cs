@@ -14,10 +14,9 @@ namespace Assignment04
             HashMap<StringKey, Item> hashMap = new HashMap<StringKey, Item>(5);
             List<Item> backpack = new List<Item>();
 
-
             double totalWeight = 0;
             double totalSold = 0;
-            const double MAX_WEIGHT = 30;
+            const double MAX_WEIGHT = 75;
 
             var itemLines = File.ReadAllLines("ItemData.txt");
             var lootItems = File.ReadAllLines("adventureLoot.txt");
@@ -48,27 +47,29 @@ namespace Assignment04
 
             foreach (var item in lootItems)
             {
-                StringKey keyName = new StringKey(item);
-
-                if (hashMap.Get(keyName) != null)
+                for (int i = 0; i < itemLines.Length; i++)
                 {
-                    Item itemToAdd = new Item(hashMap.Get(keyName).Name, hashMap.Get(keyName).GoldPieces, hashMap.Get(keyName).Weight);
+                    if (item == itemLines[i].Split(',')[0])
+                    {
+                        string name = itemLines[i].Split(',')[0];
+                        int gold = Int32.Parse(itemLines[i].Split(',')[1]);
+                        double weight = Double.Parse(itemLines[i].Split(',')[2].Trim().Replace(".", ","));
 
-                    if ((totalWeight + itemToAdd.Weight) <= MAX_WEIGHT)
-                    {
-                        totalWeight += itemToAdd.Weight;
-                        backpack.Add(itemToAdd);
-                        Console.WriteLine(String.Format("You have picked up a {0}", itemToAdd.Name));
-                    }
-                    else
-                    {
-                        Console.WriteLine(String.Format("You cannot pick up the {0}, you are already carrying {1}KG and it weights {2}KG.", itemToAdd.Name, totalWeight, itemToAdd.Weight));
+                        Item itemToAdd = new Item(name, gold, weight);
+
+                        if ((totalWeight + itemToAdd.Weight) <= MAX_WEIGHT)
+                        {
+                            totalWeight += itemToAdd.Weight;
+                            backpack.Add(itemToAdd);
+                            Console.WriteLine(String.Format("You have picked up a {0}", itemToAdd.Name));
+                        }
+                        else
+                        {
+                            Console.WriteLine(String.Format("You cannot pick up the {0}, you are already carrying {1}KG and it weights {2}KG.", itemToAdd.Name, totalWeight, itemToAdd.Weight));
+                        }
                     }
                 }
-                else
-                {
-                    Console.WriteLine(String.Format("You find an unknown item that is not in your loot table, you leave it alone. - {0}", keyName));
-                }
+
             }
 
             foreach (var item in lootItems)
